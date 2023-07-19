@@ -38,7 +38,7 @@ const QuoteForm = () => {
           onChange={onChangeHandler}
         />
         <label className="label">
-          <span className="label-text text-error font-bold">Error text</span>
+          <span className="label-text text-error font-bold"></span>
         </label>
       </div>
       <div className="mb-4">
