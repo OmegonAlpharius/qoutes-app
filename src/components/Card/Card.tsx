@@ -1,17 +1,21 @@
 type ButtonClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => void;
 
 const Card = ({
+  title,
+  content,
   onDelete,
   onEdit,
 }: {
+  title: string;
+  content: string;
   onDelete?: ButtonClickHandler;
   onEdit?: ButtonClickHandler;
 }) => {
   return (
     <div className="card w-96 bg-base-100 shadow-xl mt-4">
       <div className="card-body ">
-        <h2 className="card-title">Shoes!</h2>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
+        <h2 className="card-title">{title}</h2>
+        <p>{content}</p>
         <div className="card-actions justify-end">
           {onDelete && (
             <button className="btn btn-square" onClick={onDelete}>
