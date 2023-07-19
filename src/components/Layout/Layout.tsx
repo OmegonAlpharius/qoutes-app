@@ -26,7 +26,7 @@ const Layout = () => {
           </div>
         </div>
       </header>
-      <main className="flex ">
+      <main className="flex sm:flex-wrap h-full ">
         <Outlet />
       </main>
       <footer className="p-10" />
