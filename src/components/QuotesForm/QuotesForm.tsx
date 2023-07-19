@@ -1,18 +1,25 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEventHandler, useState } from "react";
 import SelectCategory from "@/components/SelectCategory/SelectCategory";
 import { NewQuote } from "@/interfaces/TypesQuote";
 
-const QuoteForm = () => {
-  const [quote, setQuote] = useState<NewQuote>({
-    author: "",
-    category: "",
-    text: "",
-  });
+const QuoteForm = ({
+  onSubmit,
+  initialQuote,
+}: {
+  onSubmit: (quote: NewQuote) => void;
+  initialQuote?: NewQuote;
+}) => {
+  const [quote, setQuote] = useState<NewQuote>(
+    initialQuote || {
+      author: "",
+      category: "",
+      text: "",
+    }
+  );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
-
-    console.log(quote);
+    onSubmit(quote);
     setQuote({ author: "", category: "", text: "" });
   };
 

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "@/components/Layout/Layout";
-import Quotes from "@/containers/Quotes";
-import AddQuotes from "@/containers/AddQuotes";
+import Quotes from "@/containers/Quotes/Quotes";
+import AddQuotes from "@/containers/AddQuotes/AddQuotes";
 
 function App() {
   return (
