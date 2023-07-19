@@ -1,30 +1,24 @@
-import Card from "@/components/Card/Card";
+import Preloader from "@/components/Preloader/Preloader";
+import QuotesList from "@/components/Quotes/QuotesList";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import Spinner from "@/components/Spinner/Spinner";
+import { CATEGORY } from "@/constants";
 import { useGetQuotesByCategoryQuery } from "@/features/quotes/quotesAPI";
+
 import { useParams } from "react-router-dom";
 
 const Quotes = () => {
   const { category } = useParams();
 
-  const {
-    isError,
-    isLoading,
-    data: quotes,
-  } = useGetQuotesByCategoryQuery(category);
-
-  console.log(quotes);
-
+  const { isLoading, data: quotes = [] } =
+    useGetQuotesByCategoryQuery(category);
+  const selectedCategory =
+    CATEGORY.find(({ id }) => category === id)?.title || "All";
   return (
     <>
-      {isError && <h2>Something wrong</h2>}
-      {isLoading && <Spinner />}
+      {isLoading && <Preloader />}
       <Sidebar>
         <div className="flex-1 ml-4">
-          <h1 className="text-3xl font-bold">Quotes list</h1>
-          {quotes?.map((quote) => (
-            <Card key={quote.id} title={quote.author} content={quote.text} />
-          ))}
+          <QuotesList title={selectedCategory} quotes={quotes} />
         </div>
       </Sidebar>
     </>
