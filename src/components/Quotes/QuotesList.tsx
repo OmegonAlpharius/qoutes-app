@@ -1,9 +1,29 @@
 import Card from "@/components/Card/Card";
 import { Quote } from "@/interfaces/TypesQuote";
 
-const QuotesList = ({ title, quotes }: { title: string; quotes: Quote[] }) => {
+const QuotesList = ({
+  title,
+  quotes,
+  editHandler,
+  deleteHandler,
+}: {
+  title: string;
+  quotes: Quote[];
+  editHandler: (id: string) => void;
+  deleteHandler: (id: string) => void;
+}) => {
   const renderedQuotes = quotes?.map((quote) => (
-    <Card key={quote.id} title={quote.author} content={quote.text} />
+    <Card
+      key={quote.id}
+      title={quote.author}
+      content={quote.text}
+      onEdit={() => {
+        editHandler(quote.id);
+      }}
+      onDelete={() => {
+        deleteHandler(quote.id);
+      }}
+    />
   ));
   return (
     <>
