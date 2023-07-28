@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEventHandler, useState } from "react";
+import { ChangeEvent, FormEventHandler, useEffect, useState } from "react";
 import SelectCategory from "@/components/SelectCategory/SelectCategory";
 import { NewQuote } from "@/interfaces/TypesQuote";
 
@@ -6,20 +6,28 @@ const QuoteForm = ({
   onSubmit,
   initialQuote,
 }: {
-  onSubmit: (quote: NewQuote) => void;
+  onSubmit: (quote: NewQuote) => Promise<void>;
   initialQuote?: NewQuote;
 }) => {
-  const [quote, setQuote] = useState<NewQuote>(
-    initialQuote || {
-      author: "",
-      category: "",
-      text: "",
+  const [quote, setQuote] = useState<NewQuote>({
+    author: "",
+    category: "",
+    text: "",
+  });
+  useEffect(() => {
+    if (initialQuote) {
+      setQuote(initialQuote);
     }
-  );
+  }, [initialQuote]);
 
-  const handleSubmit: FormEventHandler = (e) => {
+  const [validationError, setValidationError] = useState("");
+  const handleSubmit: FormEventHandler = async (e) => {
     e.preventDefault();
-    onSubmit(quote);
+    if (!quote.author || !quote.category || !quote.text) {
+      setValidationError("All fields required");
+      return;
+    }
+    await onSubmit(quote);
     setQuote({ author: "", category: "", text: "" });
   };
 
@@ -49,7 +57,10 @@ const QuoteForm = ({
         </label>
       </div>
       <div className="mb-4">
-        <SelectCategory handleSelectChange={onChangeHandler} />
+        <SelectCategory
+          handleSelectChange={onChangeHandler}
+          selectedValue={quote.category}
+        />
       </div>
       <div className="mb-4">
         <label className="block text-sm font-bold mb-2" htmlFor="text">
@@ -62,6 +73,12 @@ const QuoteForm = ({
           value={quote.text}
           onChange={onChangeHandler}
         />
+      </div>
+      <div className="mb-4">
+        {" "}
+        <span className="label-text text-error font-bold">
+          {validationError}
+        </span>
       </div>
       <button className="btn btn-primary" type="submit">
         Submit
