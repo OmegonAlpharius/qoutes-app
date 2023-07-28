@@ -1,8 +1,9 @@
-import { Quote } from "@/interfaces/TypesQuote";
+import { NewQuote, Quote } from "@/interfaces/TypesQuote";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const quotesAPI = createApi({
   reducerPath: "quotesApi",
+  tagTypes: ["Quotes"],
   baseQuery: fetchBaseQuery({
     baseUrl:
       "https://ajs-13-burger-builder-default-rtdb.europe-west1.firebasedatabase.app/",
@@ -28,8 +29,66 @@ export const quotesAPI = createApi({
           ([id, quote]) => ({ ...quote, id })
         );
       },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Quotes" as const, id })),
+              ...result.map(({ category }) => ({
+                type: "Quotes" as const,
+                id: category,
+              })),
+              { type: "Quotes", id: "LIST" },
+            ]
+          : [{ type: "Quotes", id: "LIST" }],
+    }),
+
+    getQuoteById: builder.query<Quote, string>({
+      query: (id) => `quotes/${id}.json`,
+      providesTags: (result) =>
+        result
+          ? [
+              { type: "Quotes" as const, id: result.id },
+              { type: "Quotes", id: result.category },
+            ]
+          : [{ type: "Quotes", id: "LIST" }],
+    }),
+
+    addQuote: builder.mutation<Record<"name", string>, NewQuote>({
+      query: (quote) => ({ url: "quotes.json", method: "POST", body: quote }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Quotes", id: arg.category },
+      ],
+    }),
+
+    updateQuote: builder.mutation<void, Quote>({
+      query: ({ id, ...quote }) => ({
+        url: `quotes/${id}.json`,
+        method: "PUT",
+        body: quote,
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Quotes", id: arg.id },
+        { type: "Quotes", id: arg.category },
+      ],
+    }),
+    deleteQuote: builder.mutation<void, Quote>({
+      query: ({ id }) => ({
+        url: `quotes/${id}.json`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Quotes", id: arg.id },
+        { type: "Quotes", id: arg.category },
+      ],
     }),
   }),
 });
 
-export const { useGetAllQuotesQuery, useGetQuotesByCategoryQuery } = quotesAPI;
+export const {
+  useGetAllQuotesQuery,
+  useGetQuotesByCategoryQuery,
+  useGetQuoteByIdQuery,
+  useAddQuoteMutation,
+  useUpdateQuoteMutation,
+  useDeleteQuoteMutation,
+} = quotesAPI;
