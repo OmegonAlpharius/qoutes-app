@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "@/components/Layout/Layout";
 import Quotes from "@/containers/Quotes/Quotes";
-import AddQuotes from "@/containers/AddQuotes/AddQuotes";
+import AddQuote from "@/containers/AddQuote/AddQuote";
+import EditQuote from "./containers/EditQuote/EditQoute";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
           <Route path="/" element={<Quotes />} />
           <Route path="quotes" element={<Quotes />} />
           <Route path="quotes/:category" element={<Quotes />} />
-          <Route path="quotes/add" element={<AddQuotes />} />
+          <Route path="quotes/add" element={<AddQuote />} />
+          <Route path="quotes/:id/edit" element={<EditQuote />} />
         </Route>
       </Routes>
     </BrowserRouter>
