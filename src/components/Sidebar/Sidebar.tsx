@@ -1,3 +1,4 @@
+import { CATEGORY } from "@/constants";
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -15,10 +16,16 @@ const Sidebar = ({ children }: Props) => {
               <NavLink to={"/quotes"} end>
                 All
               </NavLink>
-              <NavLink to={"/quotes/star-wars"} end>
-                Star wars
-              </NavLink>
             </li>
+            {CATEGORY.map(({ id, title }) => {
+              return (
+                <li key={id}>
+                  <NavLink to={`/quotes/${id}`} end>
+                    {title}
+                  </NavLink>
+                </li>
+              );
+            })}
           </ul>
         </nav>
       </aside>
