@@ -10,7 +10,7 @@ const QuotesList = ({
   title: string;
   quotes: Quote[];
   editHandler: (id: string) => void;
-  deleteHandler: (id: string) => void;
+  deleteHandler: (quote: Quote) => void;
 }) => {
   const renderedQuotes = quotes?.map((quote) => (
     <Card
@@ -21,7 +21,7 @@ const QuotesList = ({
         editHandler(quote.id);
       }}
       onDelete={() => {
-        deleteHandler(quote.id);
+        deleteHandler(quote);
       }}
     />
   ));
