@@ -26,7 +26,7 @@ const Select = <P extends Option>({
     if (value) setSelectedValue(value);
   }, [value]);
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value as P[keyof P];
+    const value = event.target.value;
     setSelectedValue(value);
     onChange(event);
   };
